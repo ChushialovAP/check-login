@@ -9,13 +9,21 @@ import XCTest
 @testable import login
 
 class loginTests: XCTestCase {
+    
+    var sut: ViewController!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+        sut = storyboard.instantiateViewController(withIdentifier: "ViewController") as? ViewController
+                
+        sut.loadViewIfNeeded()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
     }
 
     func testExample() throws {
@@ -28,6 +36,19 @@ class loginTests: XCTestCase {
         self.measure {
             // Put the code you want to measure the time of here.
         }
+    }
+
+    func testLoginForm_WhenLoaded_TextFieldAreConnected() throws {
+        _ = try XCTUnwrap(sut.loginTextField, "The login UITextField is not connected")
+    }
+    
+    func testLoginForm_WhenInputChanged_CheckWorksCorrectly() throws {
+        XCTAssertEqual(sut.checkTextField("anton"), true, "check doesn't work correctly")
+        XCTAssertEqual(sut.checkTextField("9anton"), false, "check doesn't work correctly")
+        XCTAssertEqual(sut.checkTextField("anton@gmail"), false, "check doesn't work correctly")
+        XCTAssertEqual(sut.checkTextField("-anton@gmal.com"), false, "check doesn't work correctly")
+        XCTAssertEqual(sut.checkTextField(".anton"), false, "check doesn't work correctly")
+        XCTAssertEqual(sut.checkTextField("anton@gmail.com"), true, "check doesn't work correctly")
     }
 
 }
