@@ -18,18 +18,15 @@ class ViewController: UIViewController {
     }
 
     @IBAction func textFieldChanged(_ sender: UITextField) {
-        let queue = DispatchQueue.global(qos: .userInteractive)
         let nickname = sender.text!
         
-        queue.async {
-            if self.checkTextField(nickname) {
-                DispatchQueue.main.async {
-                    self.checkImageView.image = UIImage(systemName: "checkmark.rectangle")
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.checkImageView.image = UIImage(systemName: "xmark.rectangle")
-                }
+        if self.checkTextField(nickname) {
+            DispatchQueue.main.async {
+                self.checkImageView.image = UIImage(systemName: "checkmark.rectangle")
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.checkImageView.image = UIImage(systemName: "xmark.rectangle")
             }
         }
     }
